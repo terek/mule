@@ -1,5 +1,5 @@
 generate = function() {
-  var link = 'mule.html#' + $('#form').serialize();
+  var link = 'index.html#' + $('#form').serialize();
   $('#link').attr('href', link);
   $('#link').text(link);
 }
