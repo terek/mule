@@ -1,0 +1,47 @@
+<html>
+<head>
+  <title>Mule</title>
+  <meta charset="UTF-8">
+  <script src="jquery-2.1.1.js"></script>
+  <script src="generate.js"></script>
+</head>
+<body>
+  <form id="form">
+    <div>
+      <label>Timeout</label>
+      <input type="number" name="timeout" min="1" max="60" value="15" size="2" /> sec
+    </div>
+    <div>
+      <label>Number of iterations</label>
+      <input type="number" name="iterations" min="1" max="30" value="10" size="2" />
+    </div>
+    <div>
+      <label>Minimum time to wait showing result</label>
+      <input type="number" name="wait" min="1" max="10" value="2" size="2" /> sec
+    </div>
+    <div>
+      <label>Training type</label>
+      <select name="type">
+        <option value="mult1">multiplication</option>
+        <option value="add1">addition</option>
+      </select>
+    </div>
+    <div>
+      <label>First operand</label>
+      <input type="text" name="restrictedA" size="20" value="2,3,4,5,6,7,8,9"/>
+    </div>
+    <div>
+      <label>Second operand</label>
+      <input type="text" name="restrictedB" size="20" value="2,3,4,5,6,7,8,9"/>
+    </div>
+    <div>
+      <input type="checkbox" name="adaptive" id="adaptive"/>
+      <label for="adaptive"> store response times and prefer repeating slow ones</label>
+    </div>
+  </form>
+  <button id="generate">Generate</button>
+  <div>
+    <a id="link"></a>
+  </div>
+</body>
+</html>

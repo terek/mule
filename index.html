@@ -1,0 +1,54 @@
+<html>
+<head>
+  <title>Mule</title>
+  <meta charset="UTF-8"> 
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link href="mule.css" rel="stylesheet" type="text/css" />
+  <script src='nprogress.js'></script>
+  <link rel='stylesheet' href='nprogress.css'/>
+  <script src="jquery-2.1.1.js"></script>
+  <script src="utils.js"></script>
+  <script src="state.js"></script>
+  <script src="keypad.js"></script>
+  <script src="problem.js"></script>
+  <script src="mule.js"></script>
+</head>
+<body>
+  <div id="problem">
+    <span id="operandA"></span><span id="operator"></span><span id="operandB"></span>=<span id="result"></span>
+  </div>
+  <div id="stats" class="bulletbox"></div>
+  <table id="keypad">
+    <tr>
+      <td class="key" id="1">1</td>
+      <td class="key" id="2">2</td>
+      <td class="key" id="3">3</td>
+    </tr>
+    <tr>
+      <td class="key" id="4">4</td>
+      <td class="key" id="5">5</td>
+      <td class="key" id="6">6</td>
+    </tr>
+    <tr>
+      <td class="key" id="7">7</td>
+      <td class="key" id="8">8</td>
+      <td class="key" id="9">9</td>
+    </tr>
+    <tr>
+      <td class="key" id="A"></td>
+      <td class="key" id="0">0</td>
+      <td class="key" id="B">⇤</td>
+    </tr>
+  </table>
+  <div id="curtain">
+    <div id="next" class="key"><img src="images/play-circle.svg" /></div>
+  </div>
+  <div id="final">
+    <div id="ratio" class="bulletbox"></div>
+    <div id="prizebox"></div>
+    <div id="time"></div>
+  </div>
+</body>
+</html>
