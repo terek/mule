@@ -2,7 +2,9 @@ Mule (Multiplication Learning)
 ==============================
 
 Mule is a times table learning application designed to be easily used by kids on
-touch screen displays.
+touch screen displays. Try with [default](http://terek.github.io/mule/) settings
+or
+[customize](http://visualphooey.blogspot.ch/2008/01/kids-book-gold-stars.html).
 
 Features:
 
