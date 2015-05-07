@@ -1,7 +1,7 @@
 /** @constructor */
 Problem = function(args) {
-  var a = Problem.randIntFromString(args['restrictedA']);
-  var b = Problem.randIntFromString(args['restrictedB']);
+  var a = Problem.randIntFromRangesString(args['restrictedA']);
+  var b = Problem.randIntFromRangesString(args['restrictedB']);
   if (args['adaptive']) {
     var operands = Problem.getAdaptiveRandomOperands();
     a = operands[0];
@@ -49,10 +49,54 @@ Problem.computeResultAndOperator = function(a, b) {
   return [result, operator];
 }
 
+// unused
 Problem.randIntFromString = function(restricted) {
   var arr = restricted.split(',').map(function(x) { return parseInt(x); });
   var i = randInt(0, arr.length - 1);
   return arr[i];
+};
+
+Problem.randIntFromRangesString = function(restricted) {
+  var arr = restricted.split(',').map(function(x) {
+    var dash = x.indexOf('..');
+    if (dash == -1) {
+      return parseInt(x);
+    }
+    var range = x.split('..');
+    if (range.length != 2) {
+      console.error('invalid range', x);
+    }
+    return [parseInt(range[0]), parseInt(range[1])];
+  });
+  var i = randInt(0, arr.length - 1);
+  var starts = [];
+  var count = 0;
+  for (var j = 0; j < arr.length; ++j) {
+    starts.push(count);
+    if (typeof(arr[j]) == "number") {
+      count += 1;
+    } else {
+      count += arr[j][1] - arr[j][0] + 1;
+    }
+  }
+  var i = randInt(0, count - 1);
+  count = 0;
+  for (var j = 0; j < arr.length; ++j) {
+    if (typeof(arr[j]) == "number") {
+      if (count == i) {
+        return arr[j];
+      }
+      count += 1;
+    } else {
+      var nextCount = count + arr[j][1] - arr[j][0] + 1;
+      if (count <= i && i < nextCount) {
+        return arr[j][0] + i - count;
+      }
+      count = nextCount;
+    }
+  }
+  console.error('error finding ', i, ' th element in ', arr);
+  return -1;
 };
 
 Problem.getAdaptiveRandomOperands = function() {
