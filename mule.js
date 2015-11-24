@@ -6,8 +6,8 @@ var args = getUrlArgs({
   'imageCount': '6',
   'minTime': '3',
   'maxTime': '11',
-  'restrictedA': '2,3,4,5,6,7,8,9',
-  'restrictedB': '2,3,4,5,6,7,8,9',
+  'restrictedA': '2..10',
+  'restrictedB': '2..10',
   'adaptive': false,
   'prefix': 'default'
 });
@@ -94,6 +94,11 @@ Statistics.prototype.colorBullets = function(root) {
 Control = function() {
   this.currState_ = State.State.READY;
   this.count_ = -1;
+  this.restrictedA_ = Problem.parseIntRangesString(args['restrictedA']);
+  this.countA_ = Problem.getRangeArrayCount(this.restrictedA_);
+  this.restrictedB_ = Problem.parseIntRangesString(args['restrictedB']);
+  this.countB_ = Problem.getRangeArrayCount(this.restrictedB_);
+  this.stratifiedSample_ = multiStratifiedSample(this.countA_, this.countB_, args['iterations']);
   this.problem_ = null;
   this.state_ = new State(args);
   this.keypad_ = new Keypad($('#keypad'), this.textChanged_.bind(this));
@@ -115,7 +120,11 @@ Control.prototype.statElem_ = function(i) {
 
 Control.prototype.nextProblem_ = function() {
   ++this.count_;
-  this.problem_ = new Problem(args);
+  var sample = this.stratifiedSample_[this.count_];
+  this.problem_ = new Problem(
+    args,
+    Problem.getRangeArrayElement(this.restrictedA_, sample[0]),
+    Problem.getRangeArrayElement(this.restrictedB_, sample[1]));
   this.keypad_.reset();
   this.statElem_(this.count_).css('color', 'yellow');
 }

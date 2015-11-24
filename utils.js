@@ -48,7 +48,7 @@ stratifiedSample = function(x, n) {
   for (var j = 0; j < x; ++j) {
     ax[j] = j;
   }
-  var sx = sample(ax, x % n);
+  var sx = randomSample(ax, x % n);
   sx.sort().reverse();
   for (var j in sx) {
     ax.splice(sx[j], 1);
@@ -72,5 +72,5 @@ multiStratifiedSample = function(x, y, n) {
       pairs.push([s[j], t[i]]);
     }
   }
-  return sample(pairs, n);
+  return randomSample(pairs, n);
 };
