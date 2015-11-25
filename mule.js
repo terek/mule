@@ -98,7 +98,7 @@ Control = function() {
   this.countA_ = Problem.getRangeArrayCount(this.restrictedA_);
   this.restrictedB_ = Problem.parseIntRangesString(args['restrictedB']);
   this.countB_ = Problem.getRangeArrayCount(this.restrictedB_);
-  this.stratifiedSample_ = multiStratifiedSample(this.countA_, this.countB_, args['iterations']);
+  this.stratifiedSample_ = this.generateSample_();
   this.problem_ = null;
   this.state_ = new State(args);
   this.keypad_ = new Keypad($('#keypad'), this.textChanged_.bind(this));
@@ -112,7 +112,11 @@ Control = function() {
   $(document.body).keydown(this.keypad_.keyDown.bind(this.keypad_));
 
   this.state_.init();
- };
+};
+
+Control.prototype.generateSample_ = function() {
+  return multiStratifiedSample(this.countA_, this.countB_, args['iterations']);
+}
 
 Control.prototype.statElem_ = function(i) {
   return $('#stats #' + i);
@@ -132,8 +136,10 @@ Control.prototype.nextProblem_ = function() {
 Control.prototype.nextGame_ = function() {
   this.count_ = -1;
   this.problem_ = null;
+  this.stratifiedSample_ = null;
   this.keypad_.reset();
   this.statistics_.reset();
+  this.stratifiedSample_ = this.generateSample_();
   for (var i = 0; i < args['iterations']; ++i) {
     this.statElem_(i).css('color', 'black');
   }
