@@ -1,16 +1,22 @@
-var args = getUrlArgs({
+Object.extend = function(destination, source) {
+    for (var property in source) {
+        if (source.hasOwnProperty(property)) {
+            destination[property] = source[property];
+        }
+    }
+    return destination;
+};
+
+var args = getUrlArgs(Object.extend(localArgs, {
   'timeout': '15',
-  'iterations': '10',
-  'wait': '2',
-  'type': 'mult1',
+  'iterations': '5',
+  'wait': '0.3',
   'imageCount': '6',
   'minTime': '3',
   'maxTime': '11',
-  'restrictedA': '2..10',
-  'restrictedB': '2..10',
   'adaptive': false,
-  'prefix': 'default'
-});
+  'prefix': 'default'  // for storage
+}));
 
 imageIndex = function(t) {
   var i = 0;
@@ -38,108 +44,51 @@ Storage.getTime = function(key) {
   return storedTime ? parseFloat(storedTime) : parseFloat(args['timeout']);
 };
 
-Statistics = function() {
-  this.times_ = null;
-  this.correct_ = null;
-  this.numCorrect = null;
-  this.reset();
-};
-
-Statistics.prototype.reset = function() {
-  this.times_ = [];
-  this.correct_ = [];
-  this.numCorrect = 0;
-};
-
-Statistics.prototype.addTime = function(t, correct) {
-  this.times_.push(t);
-  this.correct_.push(correct);
-  if (correct) {
-    ++this.numCorrect;
-  }
-};
-
-Statistics.prototype.getAvgTime = function() {
-  var avgTime = 0;
-  if (this.times_.length > 0) {
-    for (var i = 0; i < this.times_.length; ++i) {
-      avgTime += this.times_[i];
-    }
-    avgTime /= this.times_.length;
-  }
-  return avgTime;
-};
-
-Statistics.createBullets = function(root) {
-  $(root).empty();
-  for (var i = 0; i < args['iterations']; ++i) {
-    var bullet = $('<div>').text('•');
-    bullet.appendTo(root)
-      .attr('id',  i.toString());
-  }
-}
-
-Statistics.prototype.colorBullets = function(root) {
-  for (var i = 0; i < args['iterations']; ++i) {
-    var color = 'black';
-    if (this.correct_.length > i) {
-      color = this.correct_[i] ? 'green' : 'red';
-    }
-    $(root).find('#' + i).css('color', color);
-  }
-}
-
 
 /** @constructor */
 Control = function() {
-  this.currState_ = State.State.READY;
-  this.count_ = -1;
-  this.restrictedA_ = Problem.parseIntRangesString(args['restrictedA']);
-  this.countA_ = Problem.getRangeArrayCount(this.restrictedA_);
-  this.restrictedB_ = Problem.parseIntRangesString(args['restrictedB']);
-  this.countB_ = Problem.getRangeArrayCount(this.restrictedB_);
-  this.stratifiedSample_ = this.generateSample_();
-  this.problem_ = null;
+  if (args['domain'] == 'music') {
+    this.problem_ = new Music(args);
+  } else {
+    this.problem_ = new Maths(args);
+  }
   this.state_ = new State(args);
   this.keypad_ = new Keypad($('#keypad'), this.textChanged_.bind(this));
-  this.statistics_ = new Statistics();
-  
+  this.sumary_ = new Summary();
+
   this.state_.stateCallback_ = this.updateState.bind(this);
   this.keypad_.commandCallback_ = this.state_.toggle.bind(this.state_);
   this.keypad_.isActiveCallback_ = this.state_.isActive.bind(this.state_);
 
-  Statistics.createBullets('#stats');
+  Summary.createBullets('#summary');
   $(document.body).keydown(this.keypad_.keyDown.bind(this.keypad_));
+  var control = this;
+  $(window).resize(function() {
+    if (control.problem_) {
+      control.problem_.adjust();
+    }
+  });
 
+  this.nextGame_();
   this.state_.init();
 };
 
-Control.prototype.generateSample_ = function() {
-  return multiStratifiedSample(this.countA_, this.countB_, args['iterations']);
-}
-
 Control.prototype.statElem_ = function(i) {
-  return $('#stats #' + i);
+  return $('#summary #' + i);
 };
 
 Control.prototype.nextProblem_ = function() {
   ++this.count_;
-  var sample = this.stratifiedSample_[this.count_];
-  this.problem_ = new Problem(
-    args,
-    Problem.getRangeArrayElement(this.restrictedA_, sample[0]),
-    Problem.getRangeArrayElement(this.restrictedB_, sample[1]));
+  this.problem_.next();
   this.keypad_.reset();
   this.statElem_(this.count_).css('color', 'yellow');
 }
 
 Control.prototype.nextGame_ = function() {
   this.count_ = -1;
-  this.problem_ = null;
-  this.stratifiedSample_ = null;
+  this.problem_.reset();
   this.keypad_.reset();
-  this.statistics_.reset();
-  this.stratifiedSample_ = this.generateSample_();
+  this.sumary_.reset();
   for (var i = 0; i < args['iterations']; ++i) {
     this.statElem_(i).css('color', 'black');
   }
@@ -152,11 +101,13 @@ Control.prototype.textChanged_ = function(partial) {
   if (color == 'green') {
     this.state_.goCompleted();
   }
+  // Return false only if wrong.
+  return color != 'red';
 };
 
 Control.prototype.addTime = function(correct) {
   var time = this.state_.timeSpent();
-  this.statistics_.addTime(time, correct);
+  this.sumary_.addTime(time, correct);
   Storage.addTime(this.problem_.key_, time);
 };
 
@@ -194,8 +145,14 @@ Control.prototype.updateState = function(prevState, nextState) {
       $('#result').css('color', 'white');
       $('#result').text(this.problem_.result());
       $('#curtain').show();
+      // If this was the last problem and the solution is correct, go to the win
+      // state immediately. If solution is wrong, will need toggle to go to win.
       if (this.count_ == args['iterations'] - 1) {
-        this.state_.goWin();
+        if (prevState == State.State.COMPLETED) {
+          this.state_.goWin();
+        } else {
+          this.state_.goPreWin();
+        }
       }
     }
     if (prevState == State.State.END) {
@@ -203,15 +160,15 @@ Control.prototype.updateState = function(prevState, nextState) {
       this.nextGame_();
     }
   } else if (nextState == State.State.WIN) {
-    var avgTime = this.statistics_.getAvgTime();
+    var avgTime = this.sumary_.getAvgTime();
     var i = imageIndex(avgTime);
     var imgSrc = 'images/g/' + pad(i, 2) + '.png';
     $('#prizebox').css('background-image', 'url("' + imgSrc + '")'); 
     var timeStr = avgTime.toFixed(2);
     $('#time').text(timeStr);
-    //$('#ratio').text(this.statistics_.numCorrect + ' / ' + args['iterations']);
-    Statistics.createBullets('#ratio');
-    this.statistics_.colorBullets('#ratio');
+    //$('#ratio').text(this.sumary_.numCorrect + ' / ' + args['iterations']);
+    Summary.createBullets('#ratio');
+    this.sumary_.colorBullets('#ratio');
     $('#final').show();
   }
 }

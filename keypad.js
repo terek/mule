@@ -27,12 +27,15 @@ Keypad.prototype.reset = function() {
   this.textCallback_(this.text_);
 }
 
-Keypad.prototype.actionDigit = function(e, d) {
+Keypad.prototype.actionKey_ = function(e, ch) {
   if (!this.isActiveCallback_()) {
     return;
   }
-  this.text_ = this.text_ + d.toString();
-  this.textCallback_(this.text_);
+  // If appending the next character leads to a valid result or prefix, we keep
+  // the new char, otherwise it gets discarded, so no backspace is needed.
+  if (this.textCallback_(this.text_ + ch)) {
+    this.text_ = this.text_ + ch;
+  }
   e.stopPropagation();
   e.preventDefault();
 };
@@ -53,7 +56,9 @@ Keypad.prototype.keyDown = function(e) {
   var k = e.keyCode;
   if (48 <= k && k <= 57) {
     var digit = k - 48;
-    return this.actionDigit(e, digit)
+    return this.actionKey_(e, digit.toString());
+  } else if (65 <= k && k <= 72) {
+    return this.actionKey_(e, String.fromCharCode(e.which));
   } else if (k == 32) {
     return this.commandCallback_(e);
   } else if (k == 8) {
@@ -67,5 +72,5 @@ Keypad.prototype.mouseDown = function(e, digit) {
   setTimeout(function() {
     $('.key').css('background-color', '');
   }, 300);
-  this.actionDigit(e, digit);
+  this.actionKey_(e, digit);
 };

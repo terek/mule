@@ -1,0 +1,62 @@
+<html>
+<head>
+  <title>Mule</title>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link href="base.css" rel="stylesheet" type="text/css" />
+  <link href="music.css" rel="stylesheet" type="text/css" />
+  <script src='nprogress.js'></script>
+  <link rel='stylesheet' href='nprogress.css'/>
+  <script src="jquery-2.1.1.js"></script>
+  <script src="utils.js"></script>
+  <script src="state.js"></script>
+  <script src="music.js"></script>
+  <script src="keypad.js"></script>
+  <script src="summary.js"></script>
+  <script src="mule.js"></script>
+</head>
+<body>
+  <div id="main" class="flexi">
+    <div id="problem">
+      <img id="clef" src="images/clef.png"/>
+      <img id="note" class="extra note" src="images/note.png"/>
+      <img id="gu1" class="extra rule" src="images/rule.png"/>
+      <img id="gu2" class="extra rule" src="images/rule.png"/>
+      <img id="gd1" class="extra rule" src="images/rule.png"/>
+      <img id="gd2" class="extra rule" src="images/rule.png"/>
+      <img id="fu1" class="extra rule" src="images/rule.png"/>
+      <img id="fu2" class="extra rule" src="images/rule.png"/>
+      <img id="fd1" class="extra rule" src="images/rule.png"/>
+      <img id="fd2" class="extra rule" src="images/rule.png"/>
+    </div>
+    <div id="result-box">
+      <span id="result"></span>
+    </div>
+    <div id="keypad" class="flexi">
+      <div class="key" id="C">C</div>
+      <div class="key" id="D">D</div>
+      <div class="key" id="E">E</div>
+      <div class="key" id="F">F</div>
+      <div class="key" id="G">G</div>
+      <div class="key" id="A">A</div>
+      <div class="key" id="H">H</div>
+      <div class="key" id="#">♯</div>
+      <div class="key" id="b">♭</div>
+      <!-- <div class="key unused"></div>
+      <div class="key unused"></div>
+      <div class="key" id="B">⇤</div> -->
+    </div>
+    <div id="summary" class="flexi" />
+  </div>
+  <div id="curtain">
+    <div id="next" class="key"><img src="images/play-circle.svg" /></div>
+  </div>
+  <div id="final">
+    <div id="ratio" class="bulletbox"></div>
+    <div id="prizebox"></div>
+    <div id="time"></div>
+  </div>
+</body>
+</html>

@@ -15,6 +15,7 @@ State.State = {
   PLAY: 'play',
   TIMEOUT: 'timeout',
   COMPLETED: 'completed',
+  PREWIN: 'prewin',
   WIN: 'win',
   END: 'end'
 };
@@ -62,6 +63,10 @@ State.prototype.goCompleted = function() {
   }
 };
 
+State.prototype.goPreWin = function() {
+  this.setState_(State.State.PREWIN);
+};
+
 State.prototype.goWin = function() {
   this.setState_(State.State.WIN);
   setTimeout(this.goEnd_.bind(this), args['wait'] * 1000);
@@ -79,6 +84,9 @@ State.prototype.toggle = function() {
     break;
   case State.State.END:
     this.goReady_();
+    break;
+  case State.State.PREWIN:
+    this.goWin();
     break;
   case State.State.PLAY:
   case State.State.TIMEOUT:

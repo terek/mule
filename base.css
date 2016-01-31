@@ -1,0 +1,175 @@
+body {
+  font-family: sans-serif;
+  margin: 0px;
+  font-weight: bold;
+  text-align: center; 
+}
+
+#main {
+  flex-flow: row wrap;
+}
+
+.flexi {
+  display: -webkit-flex; /* Safari */
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;    
+}
+
+#problem {
+  flex: 3 1 600px;
+}
+
+#summary {
+  flex: 1 100%;
+  -webkit-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+}
+
+#summary div {
+  flex: 1 1 10%;
+}
+
+#keypad {
+  flex: 1 30%;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;  
+  justify-content: space-between;
+  border-spacing: 3vmax;
+}
+
+.key {
+  flex: 0 0 auto;
+  border: 0.5vh solid #BADA55;
+  background-color: #E0E0E0;
+  margin: 2%;
+  height: 15vmin;
+  width: 15vmin;
+  line-height: 15vmin;
+  font-size: 9vmin;
+  border-radius: 5vmin;
+}
+
+#keypad .unused {
+  visibility: hidden;
+}
+
+#curtain {
+  background-color: rgba(248, 247, 216, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#next {
+  position: absolute;
+  border-radius: 50%;
+  text-align: center;
+}
+
+#final {
+  background-color: rgba(248, 247, 216, 1.0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#prizebox {
+  position: absolute;
+  top: 15vh;
+  bottom: 15vh;
+  left: 0px;
+  right: 0px;
+
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center; 
+}
+
+#time {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  font-size: 10vh;
+  text-align: center;
+}
+
+#ratio {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 12vh;
+  line-height: 12vh;
+  font-size: 8vh;
+  text-align: center;
+}
+
+#ratio div {
+  display: inline-block;
+  width: 8vmin;
+}
+
+#summary {
+  height: 12vh;
+  line-height: 12vh;
+  font-size: 8vh;
+}
+
+#summary div {
+  width: 8vmin;
+}
+
+/* Landscape */
+@media screen and (orientation: landscape) {
+    
+  #problem {
+    height: 88vh;
+  }
+  
+  #keypad {
+    height: 88vh;
+  }
+
+  #next {
+    top: 20vh;
+    bottom: 20vh;
+    right: 5vh;
+    height: 60vh;
+    width: 60vh;
+  }
+
+  #next img {
+    width: 60vh;
+    height: 60vh;
+  }
+}
+
+/* Portrait */
+@media screen and (orientation: portrait) {
+    
+  #problem {
+    height: 40vh;
+  }
+  
+  #keypad {
+    height: 48vh;
+  }
+
+  #next {
+    bottom: 10vh;
+    left: 10vw;
+    height: 80vw;
+    width: 80vw;
+    border-radius: 50%;
+  }
+
+  #next img {
+    width: 80vw;
+    height: 80vw;
+  }
+}

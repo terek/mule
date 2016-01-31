@@ -1,0 +1,56 @@
+<html>
+<head>
+  <title>Mule</title>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link href="base.css" rel="stylesheet" type="text/css" />
+  <link href="maths.css" rel="stylesheet" type="text/css" />
+  <script src='nprogress.js'></script>
+  <link rel='stylesheet' href='nprogress.css'/>
+  <script src="jquery-2.1.1.js"></script>
+  <script src="utils.js"></script>
+  <script src="state.js"></script>
+  <script src="maths.js"></script>
+  <script src="keypad.js"></script>
+  <script src="summary.js"></script>
+  <script src="mule.js"></script>
+</head>
+<body>
+  <div id="main" class="flexi">
+    <div id="problem" class="vcenter-box">
+      <div id="problem-line" class="bigfont">
+        <span id="operandA"></span><span id="operator"></span><span id="operandB"></span> = <span id="result" class="bigfont"></span>
+      </div>
+    </div>
+    <div id="keypad" class="flexi">
+      <div class="key" id="1">1</div>
+      <div class="key" id="2">2</div>
+      <div class="key" id="3">3</div>
+      <div class="key" id="4">4</div>
+      <div class="key" id="5">5</div>
+      <div class="key" id="6">6</div>
+      <div class="key" id="7">7</div>
+      <div class="key" id="8">8</div>
+      <div class="key" id="9">9</div>
+      <div class="key unused" id="A"></div>
+      <div class="key" id="0">0</div>
+      <div class="key" id="B">⇤</div>
+      <!-- <div class="key unused"></div>
+      <div class="key unused"></div>
+      <div class="key" id="B">⇤</div> -->
+
+    </div>
+    <div id="summary" class="flexi" />
+  </div>
+  <div id="curtain">
+    <div id="next" class="key"><img src="images/play-circle.svg" /></div>
+  </div>
+  <div id="final">
+    <div id="ratio" class="bulletbox"></div>
+    <div id="prizebox"></div>
+    <div id="time"></div>
+  </div>
+</body>
+</html>

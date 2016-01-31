@@ -1,0 +1,28 @@
+.vcenter-box {
+  /* To align children vertically. */
+  display: flex;
+  align-items: center;
+  justify-content: center;    
+}
+
+.bigfont {
+  font-size: 20vh;
+  lige-height: 20vh;
+  align-items: center;
+}
+
+#problem {
+  flex: 1 70%;
+}
+
+#problem-line {
+  float: right;
+  flex: 1 1;
+}
+
+#result {
+  display: inline-block;
+  min-width: 30vmin;
+  background-color: #D0D0D0;
+}
+

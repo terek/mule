@@ -1,0 +1,29 @@
+#problem {
+  position: relative;
+  flex: 3 1 500px;
+}
+
+#problem .extra {
+  position: absolute;
+}
+
+#clef {
+  max-width: 100%;
+  max-height: 100%;  
+}
+
+#result-box {
+  flex: 1 1 200px;
+
+  /* To align children vertically. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#result {
+  font-size: 20vh;
+  lige-height: 20vh;
+}
+  
+
