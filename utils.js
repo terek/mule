@@ -44,6 +44,14 @@ randomSample = function(obj, n) {
 
 
 stratifiedSample = function(x, n) {
+  if (x < n) {
+    // No stratification because of repetition.
+    var ax = new Array(n);
+    for (var j = 0; j < n; ++j) {
+      ax[j] = randInt(0, x - 1);
+    }
+    return ax;
+  }
   var ax = new Array(x);
   for (var j = 0; j < x; ++j) {
     ax[j] = j;
