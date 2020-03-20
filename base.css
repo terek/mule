@@ -44,11 +44,11 @@ body {
   border: 0.5vh solid #BADA55;
   background-color: #E0E0E0;
   margin: 2%;
-  height: 15vmin;
-  width: 15vmin;
-  line-height: 15vmin;
-  font-size: 9vmin;
-  border-radius: 5vmin;
+  height: 10vmin;
+  width: 10vmin;
+  line-height: 10vmin;
+  font-size: 8vmin;
+  border-radius: 4vmin;
 }
 
 #keypad .unused {
