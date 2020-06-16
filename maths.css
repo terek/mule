@@ -6,8 +6,6 @@
 }
 
 .bigfont {
-  font-size: 15vh;
-  lige-height: 15vh;
   align-items: center;
 }
 
@@ -24,5 +22,24 @@
   display: inline-block;
   min-width: 30vmin;
   background-color: #D0D0D0;
+}
+
+/* Landscape */
+@media screen and (orientation: landscape) {
+  .bigfont {
+    font-size: 12vw;
+    line-height: 12vw;
+    align-items: center;
+  }
+
+}
+
+/* Portrait */
+@media screen and (orientation: portrait) {
+  .bigfont {
+    font-size: 20vw;
+    line-height: 20vw;
+    align-items: center;
+  }
 }
 

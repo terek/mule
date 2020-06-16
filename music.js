@@ -4,6 +4,9 @@ Music = function(args, keyboard) {
   this.trebleCount_ = args['maxTreble'] - args['minTreble'] + 1;
   // Set the name of the seventh note on the keyboard.
   $('#keypad #H').text(args['seventh']);
+
+  // VexFlow setup.
+  this.scoreNode_ = document.getElementById('score');
 };
 
 var localArgs = {
@@ -14,6 +17,63 @@ var localArgs = {
   'maxTreble': 43,  // D6
   'askOctave': 0,
   'seventh': 'B'  // or 'H'
+};
+
+Music.prototype.adjust = function() {
+
+  const notesStr = "CDEFGAB";
+  const note = notesStr[this.note_% 7];
+  const octave = Math.floor(this.note_ / 7);
+  console.info(this.note_, this.clef_, note, octave);
+
+  while (this.scoreNode_.firstChild) {
+    this.scoreNode_.removeChild(this.scoreNode_.firstChild);
+  }
+  this.renderer_ = new Vex.Flow.Renderer(this.scoreNode_, Vex.Flow.Renderer.Backends.SVG);
+  this.renderer_.resize(100, 200);
+  var context = this.renderer_.getContext();
+  context.save();
+  var formatter = new Vex.Flow.Formatter();
+  var voice = new Vex.Flow.Voice({
+    num_beats: 1,
+    beat_value: 4,
+    resolution: Vex.Flow.RESOLUTION
+  });
+
+  //Vex.Flow.TIME4_4
+  var stave1 = new Vex.Flow.Stave(0, 0, 100);
+  stave1.addClef("treble");
+  stave1.setContext(context).draw();
+
+  var stave2 = new Vex.Flow.Stave(0, 80, 100);
+  stave2.addClef("bass");
+  stave2.setContext(context).draw();
+
+  var stave = this.clef_ ? stave1 : stave2;
+  voice.addTickables([
+    new Vex.Flow.StaveNote({
+      clef: (this.clef_ ? "treble" : "bass"),
+      keys: [`${note}/${octave}`],
+      duration: "4"
+    })
+  ]).setStave(stave);
+  formatter.joinVoices([voice]).formatToStave([voice], stave);
+  voice.draw(context, stave);
+
+  this.scoreNode_.style.width = '';
+
+  // Adjust svg node.
+  const svgNode = this.scoreNode_.querySelector('svg');  
+  const s = Math.min(
+    this.scoreNode_.getBoundingClientRect().width / 100.,
+    this.scoreNode_.getBoundingClientRect().height / 200.);
+  svgNode.style.setProperty('--scale', s);  
+
+  //svgNode.removeAttribute('width');
+  //svgNode.removeAttribute('height');
+  //svgNode.removeAttribute('viewBox');
+  //svgNode.setAttribute('preserveAspectRatio', 'none');
+  //svgNode.setAttribute('viewBox', "0 0 100 100");
 };
 
 Music.prototype.reset = function() {
@@ -48,15 +108,6 @@ Music.prototype.next = function() {
   this.adjust();
 }
 
-Music.prototype.adjust = function() {
-  Music.adjustGlobal();
-  if (this.clef_ == 0) {
-    Music.showBassNote(this.note_);
-  } else {
-    Music.showTrebleNote(this.note_);
-  }
-};
-
 Music.prototype.result = function() {
   return this.result_;
 };
@@ -71,86 +122,4 @@ Music.prototype.color = function(partial) {
     color = 'red';
   }
   return color;
-};
-
-Music.trebleNotePosition = function(i) {
-  return 0.169 + 0.0263 * i;
-};
-
-Music.trebleRulePosition = function(i) {
-  return 0.163 + 0.0263 * i;
-};
-
-Music.bassNotePosition = function(i) {
-  return 0.609 + 0.0263 * i;
-};
-
-Music.bassRulePosition = function(i) {
-  return 0.603 + 0.0263 * i;
-};
-
-Music.adjustGlobal = function() {
-  var ratio = $('#clef').width() / 794.;
-  // Need to shift rules and note by the amount that makes clef image centered
-  // within #problem.
-  var imShift = ($('#problem').width() - $('#clef').width()) / 2;
-
-  // Resize notes and rules according to the size of the base image.
-  $('#problem .note').width(ratio * 44.);
-  $('#problem .note').height(ratio * 28.);
-  $('#problem .note').css({left: (imShift + 0.4 * $('#clef').width()) + 'px'}); 
-  $('#problem .rule').width(ratio * 74.);
-  $('#problem .rule').height(ratio * 3.);
-  $('#problem .rule').css({left: (imShift + 0.4 * $('#clef').width() - ratio * 15) + 'px'});
-
-
-  // Position the rules.
-  $('#gu2').css({top: (Music.trebleRulePosition(-3) * $('#clef').height()) + 'px'});
-  $('#gu1').css({top: (Music.trebleRulePosition(-1) * $('#clef').height()) + 'px'});
-  $('#gd1').css({top: (Music.trebleRulePosition(11) * $('#clef').height()) + 'px'});
-  $('#gd2').css({top: (Music.trebleRulePosition(13) * $('#clef').height()) + 'px'});
-  $('#fu2').css({top: (Music.bassRulePosition(-3) * $('#clef').height()) + 'px'});
-  $('#fu1').css({top: (Music.bassRulePosition(-1) * $('#clef').height()) + 'px'});
-  $('#fd1').css({top: (Music.bassRulePosition(11) * $('#clef').height()) + 'px'});
-  $('#fd2').css({top: (Music.bassRulePosition(13) * $('#clef').height()) + 'px'});
-};
-
-Music.showBassNote = function(i) {
-  if (i < 13 || i > 31) {
-    $('#problem .extra').css({visibility: 'hidden'});
-    return;
-  }
-  var r = Music.bassNotePosition(-5 + 31 - i);
-  $('#note').css({
-    top: (r * $('#clef').height()) + 'px'
-  });
-
-  $('#gu2').css({visibility: 'hidden'});
-  $('#gu1').css({visibility: 'hidden'});
-  $('#gd1').css({visibility: 'hidden'});
-  $('#gd2').css({visibility: 'hidden'});
-  $('#fu2').css({visibility: (i >= 30) ? 'visible' : 'hidden'});
-  $('#fu1').css({visibility: (i >= 28) ? 'visible' : 'hidden'});
-  $('#fd1').css({visibility: (i <= 16) ? 'visible' : 'hidden'});
-  $('#fd2').css({visibility: (i <= 14) ? 'visible' : 'hidden'});
-};
-
-Music.showTrebleNote = function(i) {
-  if (i < 25 || i > 43) {
-    $('#problem .extra').css({visibility: 'hidden'});
-    return;
-  }
-  var r = Music.trebleNotePosition(-5 + 43 - i);
-  $('#note').css({
-    top: (r * $('#clef').height()) + 'px'
-  });
-
-  $('#gu2').css({visibility: (i >= 42) ? 'visible' : 'hidden'});
-  $('#gu1').css({visibility: (i >= 40) ? 'visible' : 'hidden'});
-  $('#gd1').css({visibility: (i <= 28) ? 'visible' : 'hidden'});
-  $('#gd2').css({visibility: (i <= 26) ? 'visible' : 'hidden'});
-  $('#fu2').css({visibility: 'hidden'});
-  $('#fu1').css({visibility: 'hidden'});
-  $('#fd1').css({visibility: 'hidden'});
-  $('#fd2').css({visibility: 'hidden'});
 };

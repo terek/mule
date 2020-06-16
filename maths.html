@@ -18,13 +18,13 @@
   <script src="mule.js"></script>
 </head>
 <body>
-  <div id="main" class="flexi">
+  <div id="main" class="fullscreen">
     <div id="problem" class="vcenter-box">
       <div id="problem-line" class="bigfont">
         <span id="operandA"></span><span id="operator"></span><span id="operandB"></span> = <span id="result" class="bigfont"></span>
       </div>
     </div>
-    <div id="keypad" class="flexi">
+    <div id="keypad">
       <div class="key" id="1">1</div>
       <div class="key" id="2">2</div>
       <div class="key" id="3">3</div>
@@ -37,17 +37,13 @@
       <div class="key unused" id="A"></div>
       <div class="key" id="0">0</div>
       <div class="key" id="B">⇤</div>
-      <!-- <div class="key unused"></div>
-      <div class="key unused"></div>
-      <div class="key" id="B">⇤</div> -->
-
     </div>
-    <div id="summary" class="flexi" />
+    <div id="summary" class="bulletbox"></div>
   </div>
-  <div id="curtain">
+  <div id="curtain" class="fullscreen">
     <div id="next" class="key"><img src="images/play-circle.svg" /></div>
   </div>
-  <div id="final">
+  <div id="final" class="fullscreen">
     <div id="ratio" class="bulletbox"></div>
     <div id="prizebox"></div>
     <div id="time"></div>

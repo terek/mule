@@ -136,8 +136,8 @@ Control.prototype.updateState = function(prevState, nextState) {
     $('#final').hide();
     if (prevState == State.State.START ||
         prevState == State.State.END) {
-      $('#problem').hide();
-      $('#stats').hide();
+      //$('#problem').hide();
+      //$('#stats').hide();
     }
     if (prevState == State.State.COMPLETED ||
         prevState == State.State.TIMEOUT) {
