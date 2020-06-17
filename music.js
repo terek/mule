@@ -4,6 +4,7 @@ Music = function(args, keyboard) {
   this.trebleCount_ = args['maxTreble'] - args['minTreble'] + 1;
   // Set the name of the seventh note on the keyboard.
   $('#keypad #H').text(args['seventh']);
+  this.notes_ =  'CDEFGA' + (args['seventh'] == 'H' ? 'H' : 'B');
 
   // VexFlow setup.
   this.scoreNode_ = document.getElementById('score');
@@ -30,7 +31,7 @@ Music.prototype.adjust = function() {
     this.scoreNode_.removeChild(this.scoreNode_.firstChild);
   }
   this.renderer_ = new Vex.Flow.Renderer(this.scoreNode_, Vex.Flow.Renderer.Backends.SVG);
-  this.renderer_.resize(100, 200);
+  this.renderer_.resize(150, 350);
   var context = this.renderer_.getContext();
   context.save();
   var formatter = new Vex.Flow.Formatter();
@@ -95,13 +96,13 @@ Music.prototype.next = function() {
            args['minTreble'] + dice - this.bassCount_);
   var note = i % 7;
   var octave = (i - note) / 7;
-  var notes =  'CDEFGA' + (args['seventh'] == 'H' ? 'H' : 'B');
+
   this.clef_ = clef;
   this.note_ = i;
   if (args['askOctave'] != 0) {
-    this.result_ = notes[note] + '' + octave;
+    this.result_ = this.notes_[note] + '' + octave;
   } else {
-    this.result_ = notes[note];
+    this.result_ = this.notes_[note];
   }
   // Key for storage.
   this.key_ = this.result_;

@@ -7,19 +7,22 @@ Keypad = function(keypadNode, textCallback) {
   this.isActiveCallback_ = null;
   this.lastDown_ = null;
   this.keypadNode_ = keypadNode;
-  for (var i = 0; i < 10; ++i) {
+  this.keypadNode_[0].querySelectorAll(".key").forEach((k) => {
+    const id = k.id;
+    const digit = k.textContent;
     var mouseDownMaker = function(digit) {
       return function(e) { this.mouseDown(e, digit); }
     };
-    var downHandler = mouseDownMaker(i).bind(this);
-    $(keypadNode).find('#'+i).mousedown(downHandler);
-    $(keypadNode).find('#'+i).bind('touchstart', downHandler);
-  }
+    var downHandler = mouseDownMaker(digit).bind(this);
+    $(keypadNode).find('#'+id).mousedown(downHandler);
+    $(keypadNode).find('#'+id).bind('touchstart', downHandler);
+  });
   $(document).mousedown(function(e) {
     this.lastDown_ = null;
     return this.commandCallback_(e);
   }.bind(this));
-  $(keypadNode).find('#B').mousedown(this.actionBackspace.bind(this));
+  $(keypadNode).find('#backspace').mousedown(this.actionBackspace.bind(this));
+
 };
 
 Keypad.prototype.reset = function() {
@@ -68,6 +71,7 @@ Keypad.prototype.keyDown = function(e) {
 
 Keypad.prototype.mouseDown = function(e, digit) {
   this.lastDown_ = digit;
+  console.info(digit);
   $(this.keypadNode_).find('#' + digit).css('background-color', '#BADA55');
   setTimeout(function() {
     $('.key').css('background-color', '');
