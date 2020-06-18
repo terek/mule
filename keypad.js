@@ -1,5 +1,3 @@
-
-/** @constructor */
 Keypad = function(keypadNode, textCallback) {
   this.text_ = "";
   this.textCallback_ = textCallback;
