@@ -1,7 +1,7 @@
 Mule (Multiplication Learning)
 ==============================
 
-Mule is a times table learning application designed for kids on desktops and phones/tablets. Try with [default](http://terek.github.io/mule/) settings
+Mule is a times table learning application designed for kids on desktops and phones/tablets. Try with [default](http://terek.github.io/mule/maths.html) settings
 or
 [customize](http://terek.github.io/mule/generate.html).
 
