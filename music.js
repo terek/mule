@@ -21,17 +21,17 @@ var localArgs = {
 };
 
 Music.prototype.adjust = function() {
-
   const notesStr = "CDEFGAB";
   const note = notesStr[this.note_% 7];
   const octave = Math.floor(this.note_ / 7);
-  console.info(this.note_, this.clef_, note, octave);
+  const stem_threshold = this.clef_ ? 35 : 23;
+  const stem_direction = this.note_ >= stem_threshold ? -1 : 1;
 
   while (this.scoreNode_.firstChild) {
     this.scoreNode_.removeChild(this.scoreNode_.firstChild);
   }
   this.renderer_ = new Vex.Flow.Renderer(this.scoreNode_, Vex.Flow.Renderer.Backends.SVG);
-  this.renderer_.resize(150, 350);
+  this.renderer_.resize(150, 200);
   var context = this.renderer_.getContext();
   context.save();
   var formatter = new Vex.Flow.Formatter();
@@ -55,7 +55,8 @@ Music.prototype.adjust = function() {
     new Vex.Flow.StaveNote({
       clef: (this.clef_ ? "treble" : "bass"),
       keys: [`${note}/${octave}`],
-      duration: "4"
+      duration: "4",
+      stem_direction: stem_direction
     })
   ]).setStave(stave);
   formatter.joinVoices([voice]).formatToStave([voice], stave);
@@ -64,11 +65,11 @@ Music.prototype.adjust = function() {
   this.scoreNode_.style.width = '';
 
   // Adjust svg node.
-  const svgNode = this.scoreNode_.querySelector('svg');  
-  const s = Math.min(
-    this.scoreNode_.getBoundingClientRect().width / 100.,
-    this.scoreNode_.getBoundingClientRect().height / 200.);
-  svgNode.style.setProperty('--scale', s);  
+  // const svgNode = this.scoreNode_.querySelector('svg');  
+  // const s = Math.min(
+  //   this.scoreNode_.getBoundingClientRect().width / 150.,
+  //   this.scoreNode_.getBoundingClientRect().height / 200.);
+  //svgNode.style.setProperty('--scale', s);  
 
   //svgNode.removeAttribute('width');
   //svgNode.removeAttribute('height');

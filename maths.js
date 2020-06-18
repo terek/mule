@@ -65,8 +65,6 @@ Maths.prototype.color = function(partial) {
   return color;
 };
 
-
-
 Maths.computeResultOperandsAndOperator_ = function(a, b) {
   var type = args['type'];
   var operands = [a, b];

@@ -1,5 +1,3 @@
-
-
 /** @constructor */
 State = function(args) {
   this.state = State.State.START;
@@ -31,7 +29,8 @@ State.prototype.setState_ = function(state) {
   this.stateCallback_(prevState, this.state);
 };
 
-State.prototype.goPlay_ = function() {
+State.prototype.goPlay = function() {
+  this.startTime_ = currentTime();
   this.interval_ = setInterval(this.updateProgress.bind(this), 100);
   this.setState_(State.State.PLAY);
 };
@@ -79,8 +78,7 @@ State.prototype.goEnd_ = function() {
 State.prototype.toggle = function() {
   switch(this.state) {
   case State.State.READY:
-    this.startTime_ = currentTime();
-    this.goPlay_();
+    this.goPlay();
     break;
   case State.State.END:
     this.goReady_();

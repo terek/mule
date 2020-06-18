@@ -107,6 +107,7 @@ Control.prototype.textChanged_ = function(partial) {
 
 Control.prototype.addTime = function(correct) {
   var time = this.state_.timeSpent();
+  console.info(time);
   this.sumary_.addTime(time, correct);
   Storage.addTime(this.problem_.key_, time);
 };
@@ -152,6 +153,11 @@ Control.prototype.updateState = function(prevState, nextState) {
           this.state_.goWin();
         } else {
           this.state_.goPreWin();
+        }
+      } else {
+        if (prevState == State.State.COMPLETED) {
+          // Good answer, immediately proceed to next problem.
+          this.state_.goPlay();
         }
       }
     }

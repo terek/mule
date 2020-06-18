@@ -29,10 +29,10 @@ body > div.fullscreen {
 }
 
 #keypad {
-  padding: 3vmax;
+  padding: 1vmax;
   display: grid;
   grid-template: repeat(4, 1fr) / repeat(3, 1fr);
-  grid-gap: 3vmax;
+  grid-gap: 1vmax;
 
   justify-items: stretch;
   align-items: stretch;

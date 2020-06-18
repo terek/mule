@@ -6,14 +6,6 @@
   justify-content: center;    
 }
 
-.bigfont {
-  xalign-items: center;
-}
-
-#problem {
-  xflex: 1 70%;
-}
-
 #problem-line {
   display: flex;
   flex-direction: row;
@@ -27,21 +19,7 @@
   background-color: #D0D0D0;
 }
 
-
-
-#xxxproblem {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-items: stretch;
-}
-
 #score {
-  /* position: relative; */
-  height: 70%;
   display: inline-block;
 }
 
@@ -60,5 +38,28 @@
   font-size: 20vh;
   line-height: 20vh;
 }
-  
 
+/* 3 rows only */
+#keypad {
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+/* Landscape */
+@media screen and (orientation: landscape) {
+  #main {
+    grid-template: 1fr 8vmax / 1.5fr 1fr;
+  }
+  #score {
+    transform: scale(1.5);
+  }  
+}
+
+/* Portrait */
+@media screen and (orientation: portrait) {
+  #main {
+    grid-template: 1fr 1.2fr 8vmax / 1fr;
+  }
+  #score {
+    transform: scale(1.5);
+  }  
+}
