@@ -93,7 +93,6 @@ Music.prototype.reset = function() {
 
 Music.prototype.next = function() {
     var dice = this.dice_[this.index_];
-    console.info(this.dice_, this.index_);
     this.index_ += 1;
     var clef = dice < this.bassCount_ ? 0 : 1;
     var i = (clef == 0 ?
