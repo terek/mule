@@ -1,3 +1,11 @@
 {
-    "liveServer.settings.port": 5501
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        88
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 88,
+    // VSCode does not automaticall find the typescript interpreter.
+    "typescript.tsdk": "fe/node_modules/typescript/lib",
 }
